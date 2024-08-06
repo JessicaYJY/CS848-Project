@@ -45,39 +45,53 @@ if __name__ == '__main__':
     box_attributes = ["A", "B", "C"]
     W = [1, 1]  # Example fractional edge covering
 
-    # Example usage of count_oracle
+    # Example usage of count_oracle, Expected output: 3
     print(count_oracle(R1, [(1, 5), (2, 6), (3, 7)], box_attributes))
-    # Example usage of count_oracle
+    # Example usage of count_oracle, Expected output: 3
     print(count_oracle(R2, [(1, 5), (2, 6), (3, 7)], box_attributes))
-    # Example usage of median_oracle
+    # Example usage of median_oracle,  Expected output: 4
     print(median_oracle(Q, "B", [(1, 5), (2, 6), (3, 7)], box_attributes))
 
-    # Calculate Q(B)
+    # Calculate Q(B) - the sub join introduced by B
     sub_join = sub_join_induced_by_box(Q, [(1, 5), (2, 6), (3, 7)], box_attributes)
     for name, sub_relation in sub_join.items():
         print(f"Sub-relation {name}: {sub_relation.tuples}")
 
-    # Calculate AGM_W(B)
+    # Calculate AGM_W(B), Expected output: 9
     print(f"AGM_W(B): {agm_bound(Q, [(1, 5), (2, 6), (3, 7)], box_attributes)}")
 
     # Example usage of replace function
+    # Should replace the second interval with (3, 4)
+    # Expected output: [(1, 5), (3, 4), (3, 7)]
     new_box = replace([(1, 5), (2, 6), (3, 7)], 1, (3, 4))
     print(f"Original box: {[(1, 5), (2, 6), (3, 7)]}")
     print(f"New box after replace: {new_box}")
 
     # Example usage of split function
-    split_result = split(1, [(1, 5), (2, 6), (3, 7)], Q, box_attributes)
+    # The split boxes should be at most 2d+1, where d is the number of attributes in Q
+    # The boxes should be disjoint and have B as their union
+    split_result = split(0, [(1, 5), (2, 6), (3, 7)], Q, box_attributes)
     print(f"Split result: {split_result}")
+    # Split result:
+    # [[(1, 2), (2, 6), (3, 7)],
+    # [(3, 3), (2, 3), (3, 7)],
+    # [(3, 3), (4, 4), (3, 4)],
+    # [(3, 3), (4, 4), (5, 5)],
+    # [(3, 3), (4, 4), (6, 7)],
+    # [(3, 3), (5, 6), (3, 7)],
+    # [(4, 5), (2, 6), (3, 7)]]
 
     # Example usage of sample function
     sample_result = sample(W, Q, box_attributes)
     print(f"Sample result: {sample_result}")
 
-    # Calculate success probability
+    # Calculate success probability for the simple example
+    # Theoretical success probability: 0.3333333333333333
     theoretical_prob = calculate_success_probability(Q, box_attributes, W)
     print(f"Theoretical success probability: {theoretical_prob}")
 
-    # Test the sampling algorithm
+    # Test the sampling algorithm with 1000 trials using the simple example
+    # The empirical success probability should be close to the theoretical probability
     num_trials = 1000
     empirical_prob, sample_result = test_sampling_algorithm(Q, box_attributes, W, num_trials)
     print(f"Empirical success probability after {num_trials} trials: {empirical_prob}")
