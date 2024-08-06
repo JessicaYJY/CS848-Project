@@ -4,6 +4,7 @@ from Relation import Relation
 from RangeTree import RangeTree
 from MedianBST import MedianBST
 
+
 def check_tuple_in_box(relation: Relation, tuple_: Tuple[int], box: List[Tuple[int, int]], box_attributes: List[str]) -> bool:
     for attr in relation.attributes:
         attr_index_in_relation = relation.get_attribute_index(attr)
@@ -16,6 +17,7 @@ def count_oracle(relation: Relation, box: List[Tuple[int, int]], box_attributes:
     points = [tuple_ for tuple_ in relation.tuples if check_tuple_in_box(relation, tuple_, box, box_attributes)]
     range_tree = RangeTree(points)
     return range_tree.range_count(box, box_attributes, relation.attributes)
+
 
 def get_active_domain(Q: List[Relation], X: str, box: List[Tuple[int, int]], box_attributes: List[str]) -> Set[int]:
     active_domain = set()
@@ -33,6 +35,8 @@ def median_oracle(Q: List[Relation], X: str, box: List[Tuple[int, int]], box_att
     for value in active_domain:
         median_bst.insert(value)
     return median_bst.find_median()
+
+
 
 def sub_join(Q: List[Relation], box: List[Tuple[int, int]], box_attributes: List[str]) -> Dict[str, List[Tuple[int]]]:
     sub_join_result = {}

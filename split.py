@@ -21,34 +21,21 @@ List[Tuple[int, int]]:
     return new_box
 
 
-def split(i: int, B: List[Tuple[int, int]], Q: List[Relation],
-          box_attributes: List[str]) -> List[List[Tuple[int, int]]]:
+def split(i: int, B: List[Tuple[int, int]], Q: List[Relation], box_attributes: List[str]) -> List[List[Tuple[int, int]]]:
     C = []
     x_i, y_i = B[i]
     B_agm = agm_bound(Q, B, box_attributes)
 
-    # def condition(z: int) -> bool:
-    #     B_left = replace(B, i, (x_i, z - 1))
-    #     return agm_bound(Q, B_left, box_attributes) <= 0.5 * B_agm
-    #
-    # # Binary search to find the largest z
-    # z = x_i
-    # low, high = x_i, y_i
-    # while low <= high:
-    #     mid = (low + high) // 2
-    #     if condition(mid):
-    #         z = mid
-    #         low = mid + 1
-    #     else:
-    #         high = mid - 1
+    # Use the median oracle to find the largest value z
+    z = median_oracle(Q, box_attributes[i], B, box_attributes)
 
     while True:
-        z = median_oracle(Q, box_attributes[i], B, box_attributes)
         B_left = replace(B, i, (x_i, z - 1))
         if agm_bound(Q, B_left, box_attributes) <= 0.5 * B_agm:
             break
-        else:
-            y_i = z - 1
+        z -= 1
+        if z < x_i:
+            break
 
     # Create B_left, B_mid, B_right
     if z - 1 >= x_i:

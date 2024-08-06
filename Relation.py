@@ -5,8 +5,7 @@ from typing import List, Tuple, Set, Dict, Union
 
 # Define the Relation
 class Relation:
-    def __init__(self, name: str, attributes: List[str],
-                 tuples: List[Tuple[int]]):
+    def __init__(self, name: str, attributes: List[str], tuples: List[Tuple[int]]):
         self.name = name
         self.attributes = attributes
         self.tuples = tuples

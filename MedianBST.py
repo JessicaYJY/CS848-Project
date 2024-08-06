@@ -1,62 +1,43 @@
-import bisect
-from typing import List, Tuple, Set
-from Relation import Relation
-from RangeTree import RangeTree
-
-
-# class MedianBST:
-#     def __init__(self):
-#         self.elements = []
-#
-#     def insert(self, value: int):
-#         bisect.insort(self.elements, value)
-#
-#     def find_median(self) -> int:
-#         n = len(self.elements)
-#         return self.elements[(n - 1) // 2]
-
-
-class Node:
+class TreeNode:
     def __init__(self, value: int):
         self.value = value
         self.left = None
         self.right = None
-        self.size = 1  # size of the subtree rooted at this node
-
+        self.count = 1  # Node count including itself
 
 class MedianBST:
     def __init__(self):
         self.root = None
 
-    def _insert(self, root: Node, value: int) -> Node:
-        if not root:
-            return Node(value)
-        if value < root.value:
-            root.left = self._insert(root.left, value)
+    def _insert(self, node: TreeNode, value: int) -> TreeNode:
+        if not node:
+            return TreeNode(value)
+        if value < node.value:
+            node.left = self._insert(node.left, value)
         else:
-            root.right = self._insert(root.right, value)
-        root.size += 1
-        return root
+            node.right = self._insert(node.right, value)
+        node.count += 1
+        return node
 
     def insert(self, value: int):
         self.root = self._insert(self.root, value)
 
-    def _find_kth(self, root: Node, k: int) -> Node:
-        left_size = root.left.size if root.left else 0
-        if k == left_size + 1:
-            return root
-        elif k <= left_size:
-            return self._find_kth(root.left, k)
-        else:
-            return self._find_kth(root.right, k - left_size - 1)
+    def _find_kth(self, node: TreeNode, k: int) -> int:
+        if not node:
+            raise ValueError("k is out of the bounds of the tree size")
 
-    def find_median(self) -> float:
-        if not self.root:
-            return None
-        n = self.root.size
-        if n % 2 == 1:
-            return self._find_kth(self.root, n // 2 + 1).value
+        left_count = node.left.count if node.left else 0
+        if k == left_count + 1:
+            return node.value
+        elif k <= left_count:
+            return self._find_kth(node.left, k)
         else:
-            left = self._find_kth(self.root, n // 2).value
-            right = self._find_kth(self.root, n // 2 + 1).value
-            return (left + right) / 2.0
+            return self._find_kth(node.right, k - left_count - 1)
+
+    def find_median(self) -> int:
+        if not self.root:
+            raise ValueError("Tree is empty")
+        total_count = self.root.count
+        # Median is the ⌈n/2⌉-th smallest value, which is (total_count // 2) + 1
+        median_index = (total_count // 2) + 1
+        return self._find_kth(self.root, median_index)
