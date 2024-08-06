@@ -36,10 +36,10 @@ def join_relations(Q: List[Relation], box_attributes: List[str]) -> List[
 def sample(W: List[float], Q: List[Relation], box_attributes: List[str]) -> \
 Union[str, Dict[str, Union[List[str], Tuple[int]]]]:
     d = len(box_attributes)
-    B = [(1, 100)] * d  # Assuming attribute space is [1, 100]^d for simplicity
+    B = [(0, 100)] * d  # Assuming attribute space is [1, 100]^d for simplicity
 
     while agm_bound(Q, B, box_attributes) >= 2:
-        C = split(1, B, Q, box_attributes)
+        C = split(0, B, Q, box_attributes)
         agm_B = agm_bound(Q, B, box_attributes)
 
         # Calculate probabilities

@@ -1,4 +1,5 @@
 import bisect
+import time
 from typing import Dict, List, Tuple, Set, Union
 from Relation import Relation
 from RangeTree import RangeTree
@@ -25,14 +26,41 @@ def test_sampling_algorithm(Q: List[Relation], box_attributes: List[str],
                             W: List[float], num_trials: int) -> float:
     success_count = 0
     sample_results = []
+    start_time = time.time()
+
     for _ in range(num_trials):
+        # print(_)
         s = sample(W, Q, box_attributes)
         if s != "failure":
             success_count += 1
             sample_results.append(s)
+    end_time = time.time()
+
+    print(f"Time taken for {num_trials} trials: {end_time - start_time} seconds")
+
     return success_count / num_trials, sample_results
 
 
+def run_sampling_algorithm(Q: List[Relation], box_attributes: List[str],
+                            W: List[float], num_samples: int) -> List[Dict[str, Union[List[str], Tuple[int]]]]:
+    samples = []
+    sample_count = 0
+    start_time = time.time()
+    trail_count = 0
+
+
+    while sample_count < num_samples:
+        trail_count += 1
+        result = sample(W, Q, box_attributes)
+        if result != "failure":
+            samples.append(result)
+            sample_count += 1
+            # print(sample_count)
+    end_time = time.time()
+
+    print(f"Time taken for {num_samples} samples: {end_time - start_time} seconds")
+    print(f"Trail count for {num_samples} samples: {trail_count} trails")
+    return samples
 
 
 if __name__ == '__main__':
@@ -96,3 +124,11 @@ if __name__ == '__main__':
     empirical_prob, sample_result = test_sampling_algorithm(Q, box_attributes, W, num_trials)
     print(f"Empirical success probability after {num_trials} trials: {empirical_prob}")
     print(sample_result[:10])  # Print the first 10 sample results
+
+    # Run sampling algorithm
+    num_samples = 1000
+    samples = run_sampling_algorithm(Q, box_attributes, W, num_samples)
+
+    # Save samples to file
+    print(samples)
+    # save_samples_to_file(samples, "sampled_results.txt")
