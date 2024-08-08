@@ -38,7 +38,7 @@ This project focuses on the practical implementation of the theoretical advancem
    ```
 2. Basic Testing:
    ```python
-   python test_2relations_simple.py
+   python3 test_2relations_simple.py
    ```
    
    The following tests are conducted in the above script:
@@ -55,7 +55,7 @@ This project focuses on the practical implementation of the theoretical advancem
      - Outputs the first 10 sample results for inspection.
 
    ```python
-   python test_3relations_simple.py
+   python3 test_3relations_simple.py
    ```
    
    The following tests are conducted in the above script:
@@ -71,7 +71,7 @@ This project focuses on the practical implementation of the theoretical advancem
 
 4. Large Dataset Testing:
    ```python
-   python test_2relstions_large.py
+   python3 test_2relstions_large.py
    ```
    
    The following tests are conducted in the above script:
@@ -88,7 +88,7 @@ This project focuses on the practical implementation of the theoretical advancem
      - Outputs the first 10 sample results for inspection.
 
    ```python
-   python test_3relations_large.py
+   python3 test_3relations_large.py
    ```
    
    The following tests are conducted in the above script:
