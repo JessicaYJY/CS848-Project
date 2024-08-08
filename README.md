@@ -1,7 +1,7 @@
 # CS848-Project
 
 ## Description
-This project focuses on the practical implementation of the theoretical advancements presented in the paper "On Join Sampling and the Hardness of Combinatorial Output-Sensitive Join Algorithms" by Deng et al on 2023. The paper can be found here: [paper](https://www.cse.cuhk.edu.hk/~taoyf/paper/pods23-jsamp.pdf)
+This project focuses on the practical implementation of the theoretical advancements presented in the paper "On Join Sampling and the Hardness of Combinatorial Output-Sensitive Join Algorithms" by Deng et al on 2023. The paper can be found here: [On Join Sampling and the Hardness of Combinatorial Output-Sensitive Join Algorithms](https://www.cse.cuhk.edu.hk/~taoyf/paper/pods23-jsamp.pdf)
 
 ## Requirements
 - Python 3.7 or higher
