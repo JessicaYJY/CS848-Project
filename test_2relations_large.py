@@ -4,8 +4,8 @@ from typing import Dict, List, Tuple, Set, Union
 from Relation import Relation
 from RangeTree import RangeTree
 from Oracles import count_oracle, median_oracle, sub_join_induced_by_box
-from sample import join_relations, sample
-from split import agm_bound, replace, split
+from Sample import join_relations, sample
+from Split import agm_bound, replace, split
 import random
 
 
@@ -32,8 +32,16 @@ def test_sampling_algorithm(Q: List[Relation], box_attributes: List[str],
         if s != "failure":
             success_count += 1
             sample_results.append(s)
-    end_time = time.time()
 
+        # Print the current testing percentage as a progress bar
+        progress = (_ + 1) / num_trials
+        bar_length = 20
+        progress_bar = '=' * int(progress * bar_length)
+        percentage = progress * 100
+        print(f"\r{progress_bar:<{bar_length}} {percentage:.0f}%", end='')
+
+    end_time = time.time()
+    print("\n")
     print(f"Time taken for {num_trials} trials: {end_time - start_time} seconds")
 
     return success_count / num_trials, sample_results
@@ -53,9 +61,16 @@ def run_sampling_algorithm(Q: List[Relation], box_attributes: List[str],
         if result != "failure":
             samples.append(result)
             sample_count += 1
-            # print(sample_count)
-    end_time = time.time()
 
+            # Print the current testing percentage as a progress bar
+            progress = (sample_count) / num_samples
+            bar_length = 20
+            progress_bar = '=' * int(progress * bar_length)
+            percentage = progress * 100
+            print(f"\r{progress_bar:<{bar_length}} {percentage:.0f}%", end='')
+
+    end_time = time.time()
+    print("\n")
     print(f"Time taken for {num_samples} samples: {end_time - start_time} seconds")
     print(f"Trail count for {num_samples} samples: {trail_count} trails")
     return samples
@@ -82,24 +97,33 @@ def read_from_file(filename: str) -> List[Tuple[int, int]]:
             parts = line.strip().split(',')
             data.append((int(parts[0]), int(parts[1])))
     return data
-
-
+def save_samples_to_file(samples: List[Dict[str, Union[List[str], Tuple[int]]]],
+                         file_path: str):
+    with open(file_path, 'w') as f:
+        f.write("A\tB\tC\n")
+        for sample in samples:
+            tuple_ = sample["tuple"]
+            f.write("\t".join(map(str, tuple_)) + "\n")
 
 
 if __name__ == '__main__':
+
+    # Generate random data for R1 and R2 by uncommenting the following code
     # num_tuples = 100
     # value_range = (0, 10)
     #
     # R1_data = generate_unique_random_data(num_tuples, value_range)
     # R2_data = generate_unique_random_data(num_tuples, value_range)
     #
-    # save_to_file("R1_data.txt", R1_data)
-    # save_to_file("R2_data.txt", R2_data)
+    # save_to_file("data/R1_data.txt", R1_data)
+    # save_to_file("data/R2_data.txt", R2_data)
     #
     # print("Unique random data saved to R1_data.txt and R2_data.txt")
 
-    R1_data = read_from_file("R1_data.txt")
-    R2_data = read_from_file("R2_data.txt")
+
+    # Load data from file
+    R1_data = read_from_file("data/R1_data.txt")
+    R2_data = read_from_file("data/R2_data.txt")
 
     R1 = Relation("R1", ["A", "B"], R1_data)
     R2 = Relation("R2", ["B", "C"], R2_data)
@@ -112,47 +136,68 @@ if __name__ == '__main__':
 
 
     # Example usage of count_oracle
+    print("Example usage of count_oracle, Expected output: 100")
     print(count_oracle(R1, [(0, 10), (0, 10), (0, 10)], box_attributes))
+    print("Example usage of count_oracle, Expected output: 100")
     print(count_oracle(R2, [(0, 10), (0, 10), (0, 10)], box_attributes))
+    print("\n")
 
     # Example usage of median_oracle
+    print("Example usage of median_oracle, Expected output: 5")
     print(median_oracle(Q, "B", [(0, 10), (0, 10), (0, 10)], box_attributes))
+    print("\n")
 
     # Calculate sub join induced by box
+    print("Example of calculating sub join introduced by B:")
     sub_join = sub_join_induced_by_box(Q, [(0, 10), (0, 10), (0, 10)], box_attributes)
     for name, sub_relation in sub_join.items():
         print(f"Sub-relation {name}: {sub_relation.tuples}")
+    print("\n")
 
     # Calculate AGM_W(B)
+    print("Example to calculate AGM_W(B), Expected output: 10000")
     print(f"AGM_W(B): {agm_bound(Q, [(0, 10), (0, 10), (0, 10)], box_attributes)}")
+    print("\n")
 
     # Example usage of replace function
+    print("Example usage of replace function, should replace the second box attribute with (5, 7)")
     new_box = replace([(0, 10), (0, 10), (0, 10)], 1, (5, 7))
     print(f"Original box: {[(0, 10), (0, 10), (0, 10)]}")
     print(f"New box after replace: {new_box}")
+    print("\n")
 
     # Example usage of split function
+    print("Example usage of split function")
     split_result = split(0, [(0, 10), (0, 10), (0, 10)], Q, box_attributes)
     print(f"Split result: {split_result}")
+    print("\n")
 
     # Example usage of sample function
+    print("Example usage of sample function:")
     sample_result = sample(W, Q, box_attributes)
     print(f"Sample result: {sample_result}")
+    print("\n")
 
     # Calculate success probability
+    print("Calculating success probability")
     theoretical_prob = calculate_success_probability(Q, box_attributes, W)
     print(f"Theoretical success probability: {theoretical_prob}")
 
     # Test the sampling algorithm with 1000 trials
+    print(
+        "Start testing the sampling algorithm with 1000 trials and calculate the empirical success probability...")
     num_trials = 1000
     empirical_prob, sample_result = test_sampling_algorithm(Q, box_attributes, W, num_trials)
     print(f"Empirical success probability after {num_trials} trials: {empirical_prob}")
-    print(sample_result[:10])
+    print("First 10 Samples in result:", sample_result[:10])
+    print("\n")
 
     # Run sampling algorithm until 1000 samples are obtained
+    print("Run sampling algorithm until 1000 samples are obtained...")
     num_samples = 1000
     samples = run_sampling_algorithm(Q, box_attributes, W, num_samples)
 
     # Save samples to file
-    print(samples)
-    # save_samples_to_file(samples, "sampled_results.txt")
+    save_samples_to_file(samples, "data/sampled_results.txt")
+    print("Samples saved to data/sampled_results.txt")
+    print("First 10 Samples in result:", samples[:10])

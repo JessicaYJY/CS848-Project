@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple, Set, Union
 from Relation import Relation
 from RangeTree import RangeTree
 from Oracles import count_oracle, sub_join_induced_by_box
-from split import agm_bound, split
+from Split import agm_bound, split
 import random
 
 

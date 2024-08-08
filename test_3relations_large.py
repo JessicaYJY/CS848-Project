@@ -4,8 +4,8 @@ from typing import Dict, List, Tuple, Set, Union
 from Relation import Relation
 from RangeTree import RangeTree
 from Oracles import count_oracle, median_oracle, sub_join_induced_by_box
-from sample import join_relations, sample
-from split import agm_bound, replace, split
+from Sample import join_relations, sample
+from Split import agm_bound, replace, split
 import random
 
 
@@ -17,13 +17,20 @@ def test_sampling_algorithm(Q: List[Relation], box_attributes: List[str],
     start_time = time.time()
 
     for _ in range(num_trials):
-        print(_)
         s = sample(W, Q, box_attributes)
         if s != "failure":
             success_count += 1
             sample_results.append(s)
-    end_time = time.time()
 
+        # Print the current testing percentage as a progress bar
+        progress = (_ + 1) / num_trials
+        bar_length = 20
+        progress_bar = '=' * int(progress * bar_length)
+        percentage = progress * 100
+        print(f"\r{progress_bar:<{bar_length}} {percentage:.0f}%", end='')
+
+    end_time = time.time()
+    print("\n")
     print(f"Time taken for {num_trials} trials: {end_time - start_time} seconds")
 
     return success_count / num_trials, sample_results
@@ -43,9 +50,16 @@ def run_sampling_algorithm(Q: List[Relation], box_attributes: List[str],
         if result != "failure":
             samples.append(result)
             sample_count += 1
-            print(sample_count)
-    end_time = time.time()
 
+            # Print the current testing percentage as a progress bar
+            progress = (sample_count) / num_samples
+            bar_length = 20
+            progress_bar = '=' * int(progress * bar_length)
+            percentage = progress * 100
+            print(f"\r{progress_bar:<{bar_length}} {percentage:.0f}%", end='')
+
+    end_time = time.time()
+    print("\n")
     print(f"Time taken for {num_samples} samples: {end_time - start_time} seconds")
     print(f"Trail count for {num_samples} samples: {trail_count} trails")
     return samples
@@ -85,23 +99,25 @@ def read_from_file(filename: str) -> List[Tuple[int, int]]:
 
 if __name__ == '__main__':
 
-    num_tuples = 100
-    value_range = (0, 10)
+    # Generate random data for R3, R4 and R5 by uncommenting the following code
+    # num_tuples = 100
+    # value_range = (0, 10)
 
-    R3_data = generate_unique_random_data(num_tuples, value_range)
-    R4_data = generate_unique_random_data(num_tuples, value_range)
-    R5_data = generate_unique_random_data(num_tuples, value_range)
+    # R3_data = generate_unique_random_data(num_tuples, value_range)
+    # R4_data = generate_unique_random_data(num_tuples, value_range)
+    # R5_data = generate_unique_random_data(num_tuples, value_range)
+    #
+    # save_to_file("data/R3_data.txt", R3_data)
+    # save_to_file("data/R4_data.txt", R4_data)
+    # save_to_file("data/R5_data.txt", R5_data)
+    #
+    # print("Unique random data saved to R1_data.txt and R2_data.txt")
 
-    save_to_file("R3_data.txt", R3_data)
-    save_to_file("R4_data.txt", R4_data)
-    save_to_file("R5_data.txt", R5_data)
 
-    print("Unique random data saved to R1_data.txt and R2_data.txt")
-
-
-    R3_data = read_from_file("R3_data.txt")
-    R4_data = read_from_file("R4_data.txt")
-    R5_data = read_from_file("R5_data.txt")
+    # Load data from file
+    R3_data = read_from_file("data/R3_data.txt")
+    R4_data = read_from_file("data/R4_data.txt")
+    R5_data = read_from_file("data/R5_data.txt")
 
     R3 = Relation("R3", ["A", "B"], R3_data)
     R4 = Relation("R4", ["B", "C"], R4_data)
@@ -111,23 +127,28 @@ if __name__ == '__main__':
     box_attributes = ["A", "B", "C", "D"]
     W = [1.5, 1, 1.5]
 
-    # # Test the sampling algorithm with 1000 trials
-    # num_trials = 1000
-    # empirical_prob, sample_result = test_sampling_algorithm(Q, box_attributes,
-    #                                                         W, num_trials)
-    # print(
-    #     f"Empirical success sample probability after {num_trials} trials: {empirical_prob}")
-    # print(sample_result[:10])
+    # Test the sampling algorithm with 1000 trials
+    print("Testing the sampling algorithm with 1000 trials...")
+    num_trials = 1000
+    empirical_prob, sample_result = test_sampling_algorithm(Q, box_attributes,
+                                                            W, num_trials)
+    print(
+        f"Empirical success sample probability after {num_trials} trials: {empirical_prob}")
+    print("First 10 Samples in result:", sample_result[:10])
+    print("\n")
 
 
     # Run sampling algorithm until 1000 samples are obtained
     # print running time
-    num_samples = 100
+
+    print("Run sampling algorithm until 1000 samples are obtained...")
+    num_samples = 1000
     samples = run_sampling_algorithm(Q, box_attributes, W, num_samples)
 
     # Save samples to file
-    print(samples)
-    save_samples_to_file(samples, "sampled_results.txt")
+    save_samples_to_file(samples, "data/sampled_results.txt")
+    print("Samples saved to data/sampled_results.txt")
+    print("First 10 Samples in result:", samples[:10])
 
 
 
