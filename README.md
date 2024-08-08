@@ -40,59 +40,6 @@ This project focuses on the practical implementation of the theoretical advancem
    ```python
    python test_2relations_simple.py
    ```
-   Example Result:
-   ```text
-   Example usage of count_oracle, Expected output: 3
-3
-Example usage of count_oracle, Expected output: 3
-3
-Example usage of median_oracle,  Expected output: 4
-4
-
-
-Example of calculating sub join introduced by B:
-Sub-relation R1: [(1, 2), (3, 4), (5, 6)]
-Sub-relation R2: [(2, 3), (4, 5), (6, 7)]
-
-
-Example to calculate AGM_W(B), Expected output: 9
-AGM_W(B): 9.0
-
-
-Example usage of replace function: should replace the second interval with (3, 4)
-Original box: [(1, 5), (2, 6), (3, 7)]
-New box after replace: [(1, 5), (3, 4), (3, 7)]
-
-
-Example usage of split function
-The split boxes should be disjoint and have B as their union, with B = [(1, 5), (2, 6), (3, 7)]
-Split result: [[(1, 2), (2, 6), (3, 7)], [(3, 3), (2, 3), (3, 7)], [(3, 3), (4, 4), (3, 4)], [(3, 3), (4, 4), (5, 5)], [(3, 3), (4, 4), (6, 7)], [(3, 3), (5, 6), (3, 7)], [(4, 5), (2, 6), (3, 7)]]
-
-
-Example usage of sample function:
-Sample result: failure
-
-
-Calculate theoretical success probability for the simple test case
-Theoretical success probability: 0.3333333333333333
-
-
-Start testing the sampling algorithm with 1000 trials and calculate the empirical success probability...
-==================== 100%
-
-Time taken for 1000 trials: 0.26511120796203613 seconds
-Empirical success probability after 1000 trials: 0.314
-First 10 Samples in result: [{'attribute': ['A', 'B', 'C'], 'tuple': (5, 6, 7)}, {'attribute': ['A', 'B', 'C'], 'tuple': (3, 4, 5)}, {'attribute': ['A', 'B', 'C'], 'tuple': (3, 4, 5)}, {'attribute': ['A', 'B', 'C'], 'tuple': (3, 4, 5)}, {'attribute': ['A', 'B', 'C'], 'tuple': (5, 6, 7)}, {'attribute': ['A', 'B', 'C'], 'tuple': (3, 4, 5)}, {'attribute': ['A', 'B', 'C'], 'tuple': (1, 2, 3)}, {'attribute': ['A', 'B', 'C'], 'tuple': (5, 6, 7)}, {'attribute': ['A', 'B', 'C'], 'tuple': (3, 4, 5)}, {'attribute': ['A', 'B', 'C'], 'tuple': (1, 2, 3)}]
-
-
-Run sampling algorithm until 1000 samples are obtained...
-==================== 100%
-
-Time taken for 1000 samples: 0.76885986328125 seconds
-Trail count for 1000 samples: 2885 trails
-Samples saved to data/sampled_results.txt
-First 10 Samples in result: [{'attribute': ['A', 'B', 'C'], 'tuple': (5, 6, 7)}, {'attribute': ['A', 'B', 'C'], 'tuple': (5, 6, 7)}, {'attribute': ['A', 'B', 'C'], 'tuple': (3, 4, 5)}, {'attribute': ['A', 'B', 'C'], 'tuple': (5, 6, 7)}, {'attribute': ['A', 'B', 'C'], 'tuple': (1, 2, 3)}, {'attribute': ['A', 'B', 'C'], 'tuple': (3, 4, 5)}, {'attribute': ['A', 'B', 'C'], 'tuple': (5, 6, 7)}, {'attribute': ['A', 'B', 'C'], 'tuple': (1, 2, 3)}, {'attribute': ['A', 'B', 'C'], 'tuple': (1, 2, 3)}, {'attribute': ['A', 'B', 'C'], 'tuple': (3, 4, 5)}]
-```
    
    The following tests are conducted in the above script:
    - Demonstrate Utility Functions: Example usage of `count_oracle`, `median_oracle`, Calculate Q(B), Calculate AGM_W(B), `replace`, `split`, `sample` functions.
@@ -156,4 +103,7 @@ First 10 Samples in result: [{'attribute': ['A', 'B', 'C'], 'tuple': (5, 6, 7)},
      - Outputs the first 10 sample results for inspection.
 
 ## Result
-The results of the experiments will be printed to the console. For saved generate samples, check (`data/sampled_results.txt`).
+The results of the testing scripts above will be printed to the console. For saved generate samples, check (`data/sampled_results.txt`).
+
+## Contact
+Jiangyue Yu - j335yu@uwaterloo.ca
