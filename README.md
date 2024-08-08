@@ -57,6 +57,7 @@ This project focuses on the practical implementation of the theoretical advancem
    ```python
    python test_3relations_simple.py
    ```
+   
    The following tests are conducted in the above script:
    - Test Sampling Algorithm:
      - Tests the sampling algorithm with 1000 trials using the function `test_sampling_algorithm`.
